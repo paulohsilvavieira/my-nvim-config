@@ -7,10 +7,13 @@ return {
     },
     config = function()
         require("nvim-tree").setup {
+            filters = {
+                dotfiles = true,
+            },
             hijack_directories = {
                 enable = false,
             },
-            filters = { custom = { "^.git$" } },
+
 
             hijack_cursor = false, -- put cursor at start of filename
             update_cwd = true,
@@ -20,7 +23,6 @@ return {
                 update_cwd = true,
             },
             renderer = {
-                root_folder_modifier = ":t",
                 icons = {
                     glyphs = {
                         default = "",
@@ -57,39 +59,38 @@ return {
                     error = "",
                 },
             },
-
-
         }
+
         vim.keymap.set('n', "<leader>e", ":NvimTreeToggle<CR>", { silent = true })
 
 
 
-        local function open_nvim_tree(data)
-            -- buffer is a real file on the disk
-            local real_file = vim.fn.filereadable(data.file) == 1
+        -- local function open_nvim_tree(data)
+        --     -- buffer is a real file on the disk
+        --     local real_file = vim.fn.filereadable(data.file) == 1
 
-            -- buffer is a [No Name]
-            local no_name = data.file == "" and vim.bo[data.buf].buftype == ""
+        --     -- buffer is a [No Name]
+        --     local no_name = data.file == "" and vim.bo[data.buf].buftype == ""
 
-            -- open the tree, find the file but don't focus it
-            require("nvim-tree.api").tree.toggle({ focus = false, find_file = false, })
-        end
-        local function open_nvim_tree_new_buffer(data)
-            local directory = vim.fn.isdirectory(data.file) == 1
+        --     -- open the tree, find the file but don't focus it
+        --     require("nvim-tree.api").tree.toggle({ focus = false, find_file = false, })
+        -- end
+        -- local function open_nvim_tree_new_buffer(data)
+        --     local directory = vim.fn.isdirectory(data.file) == 1
 
-            if not directory then
-                return
-            end
-            vim.cmd.enew()
-            vim.cmd.bw(data.buf)
-            vim.cmd.cd(data.file)
-            require("nvim-tree.api").tree.open()
-        end
+        --     if not directory then
+        --         return
+        --     end
+        --     vim.cmd.enew()
+        --     vim.cmd.bw(data.buf)
+        --     vim.cmd.cd(data.file)
+        --     require("nvim-tree.api").tree.open()
+        -- end
 
 
-        vim.g.nvim_tree_auto_open = 1
-        vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
-        vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree_new_buffer })
+        -- vim.g.nvim_tree_auto_open = 0
+        -- vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
+        -- vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree_new_buffer })
     end
 
 
