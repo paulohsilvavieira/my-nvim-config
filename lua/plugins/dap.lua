@@ -4,12 +4,7 @@ return {
         "rcarriga/nvim-dap-ui",
     },
     config = function()
-        local buf_ft = vim.bo.filetype
-
-        if buf_ft == "dapui_breakpoints" then
-            file_icon = "ola"
-        end
-
+        
         require("dapui").setup({
             active = true,
             on_config_done = nil,
@@ -64,7 +59,6 @@ return {
                         {
                             elements = {
                                 { id = "repl",    size = 0.45 },
-                                { id = "console", size = 0.55 },
                             },
                             size = 0.27,
                             position = "bottom",
@@ -104,11 +98,7 @@ return {
 
         local dap, dapui = require("dap"), require("dapui")
 
-        dap.adapters.node2 = {
-            type = 'executable',
-            command = 'node',
-            args = { os.getenv('HOME') .. '/dev/microsoft/vscode-node-debug2/out/src/nodeDebug.js' },
-        }
+
 
 
         dap.listeners.before.attach.dapui_config = function()
@@ -123,6 +113,36 @@ return {
         dap.listeners.before.event_exited.dapui_config = function()
             dapui.close()
         end
+
+        dap.adapters.node2 = {
+            type = 'executable',
+            command = 'node',
+            args = { os.getenv('HOME') .. '/dev/microsoft/vscode-node-debug2/out/src/nodeDebug.js' },
+        }
+
+        vim.fn.sign_define("DapBreakpoint", {
+                text = '',
+                texthl = "DiagnosticSignError",
+                linehl = "",
+                numhl = "",
+        })
+
+
+        vim.fn.sign_define("DapBreakpointRejected", {
+            text = '',
+            texthl = "DiagnosticSignError",
+            linehl = "",
+            numhl = "",
+        })
+        vim.fn.sign_define("DapStopped", {
+            text = "",
+            texthl = "DiagnosticSignWarn",
+            linehl = "Visual",
+            numhl = "DiagnosticSignWarn",
+        })
+
+        
+
 
         vim.keymap.set("n", "<F9>", ":DapToggleBreakpoint<CR>", { silent = true })
         vim.keymap.set("n", "<F5>", ":DapContinue<CR>", { silent = true })
