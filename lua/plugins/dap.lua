@@ -1,6 +1,43 @@
+local js_based_languages = {
+	"typescript",
+	"javascript",
+	"typescriptreact",
+	"javascriptreact",
+	"vue",
+} 
 return {
+	
 	"mfussenegger/nvim-dap",
-	dependencies = { "rcarriga/nvim-dap-ui" },
+	dependencies = { 
+		{"rcarriga/nvim-dap-ui"},
+		{
+			"microsoft/vscode-js-debug",
+			build = "npm install --legacy-peer-deps --no-save && npx gulp vsDebugServerBundle && rm -rf out && mv dist out",
+			version = "1.*",
+		},
+		{
+			"mxsdev/nvim-dap-vscode-js",
+			config = function()
+				---@diagnostic disable-next-line: missing-fields
+				require("dap-vscode-js").setup({
+					
+					debugger_path = vim.fn.resolve(vim.fn.stdpath("data") .. "/lazy/vscode-js-debug/src/vsDebugServer.js"),
+			
+				
+					adapters = {
+						"chrome",
+						"pwa-node",
+						"pwa-chrome",
+						"pwa-msedge",
+						"pwa-extensionHost",
+						"node-terminal",
+						"node"
+					},
+				})
+			end,
+		},
+	},
+	
 	config = function()
 		require("dapui").setup({
 			controls = {
@@ -50,94 +87,59 @@ return {
 			command = 'node',
 			args = {os.getenv('HOME') .. '/dev/microsoft/vscode-node-debug2/out/src/nodeDebug.js'},
 		}
-		vim.fn.sign_define("DapBreakpoint", {
-			text = "",
-			texthl = "DiagnosticSignError",
-			linehl = "",
-			numhl = "",
-		})
 
-		vim.fn.sign_define("DapBreakpointRejected", {
-			text = "",
-			texthl = "DiagnosticSignError",
-			linehl = "",
-			numhl = "",
-		})
-		vim.fn.sign_define("DapStopped", {
-			text = "",
-			texthl = "DiagnosticSignWarn",
-			linehl = "Visual",
-			numhl = "DiagnosticSignWarn",
-		})
+		for _, language in ipairs(js_based_languages) do
+			dap.configurations[language] = {
+				{
+					type = "node2",
+					request = "attach",
+					name = "Attach debugger to existing `node --inspect` process",
+					processId = require 'dap.utils'.pick_process,
+					sourceMaps = true,
+					resolveSourceMapLocations = {
+						"${workspaceFolder}/**",
+						"!**/node_modules/**" },
+					cwd = "${workspaceFolder}/src",
+					skipFiles = { "${workspaceFolder}/node_modules/**/*.js" },
+				},
 
-		vim.api.nvim_create_autocmd("BufWinEnter", {
-			callback = function()
-				local buf_ft = vim.bo.filetype
+				{
+					name = "----- ↓ launch.json configs ↓ -----",
+					type = "",
+					request = "launch",
+				},
+			}
+		end
 
-				if buf_ft == "dapui_breakpoints" then
-					vim.cmd("setlocal winbar=\\ Breakpoints")
-				end
-				if buf_ft == "dapui_stacks" then
-					vim.cmd("setlocal winbar=\\\\ Stacks")
-				end
 
-				if buf_ft == "dapui_scopes" then
-					vim.cmd("setlocal winbar=\\\\ Scopes")
-				end
+		-- Keymaps
 
-				if buf_ft == "dapui_watches" then
-					vim.cmd("setlocal winbar=\\󰂥\\ Watches")
-				end
-			end,
-		})
+		vim.keymap.set("n", "<F9>", ":DapToggleBreakpoint<CR>", {silent = true})
+		vim.keymap.set("n", "<F5>", ":DapContinue<CR>", {silent = true,})
+		vim.keymap.set("n", "<S-F5>", ":DapTerminate<CR>", {silent = true})
+		vim.keymap.set("n", "<F10>", ":DapStepOver<CR>", {silent = true})
+		vim.keymap.set("n", "<F11>", ":DapStepIn<CR>", {silent = true})
+		vim.keymap.set("n", "<S-F11>", ":DapStepOut<CR>", {silent = true})
+		vim.keymap.set("n", "<leader>do", ":lua require('dapui').open()<CR>", {silent = true})
+		vim.keymap.set("n", "<leader>dc", ":lua require('dapui').close()<CR>", {silent = true})
 
-		vim.keymap.set("n", "<F9>", ":DapToggleBreakpoint<CR>", {
-			silent = true,
-		})
-		vim.keymap.set("n", "<F5>", ":DapContinue<CR>", {
-			silent = true,
-		})
-		vim.keymap.set("n", "<S-F5>", ":DapTerminate<CR>", {
-			silent = true,
-		})
-		vim.keymap.set("n", "<F10>", ":DapStepOver<CR>", {
-			silent = true,
-		})
-		vim.keymap.set("n", "<F11>", ":DapStepIn<CR>", {
-			silent = true,
-		})
-		vim.keymap.set("n", "<S-F11>", ":DapStepOut<CR>", {
-			silent = true,
-		})
-
-		vim.keymap.set("n", "<leader>do", ":lua require('dapui').open()<CR>", {
-			silent = true,
-		})
-
-		vim.keymap.set("n", "<leader>dc", ":lua require('dapui').close()<CR>", {
-			silent = true,
-		})
-
-		dap.configurations.typescript = {
-			{
-				-- For this to work you need to make sure the node process is started with the `--inspect` flag.
-				name = "Attach to process",
-				type = "node2",
-				request = "attach",
-				processId = require("dap.utils").pick_process,
-				cwd = "${workspaceFolder}"
-			},
-		}
-
-		dap.configurations.javascript = {
-			{
-				-- For this to work you need to make sure the node process is started with the `--inspect` flag.
-				name = "Attach to process",
-				type = "node2",
-				request = "attach",
-				processId = require("dap.utils").pick_process,
-				cwd = "${workspaceFolder}",
-			},
-		}
 	end,
+	keys = {
+		{
+			"<leader>da",
+			function()
+				if vim.fn.filereadable(".vscode/launch.json") then
+					local dap_vscode = require("dap.ext.vscode")
+					dap_vscode.load_launchjs(nil, {
+						["pwa-node"] = js_based_languages,
+						["chrome"] = js_based_languages,
+						["node2"] = js_based_languages,
+						["pwa-chrome"] = js_based_languages,
+					})
+				end
+				require("dap").continue()
+			end,
+			desc = "Run with Args",
+		},
+	},
 }

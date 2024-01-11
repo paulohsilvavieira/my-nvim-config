@@ -36,3 +36,43 @@ vim.api.nvim_create_autocmd({"BufEnter", "CursorHold", "CursorHoldI", "FocusGain
 
 
 
+vim.fn.sign_define("DapBreakpoint", {
+    text = "",
+    texthl = "DiagnosticSignError",
+    linehl = "",
+    numhl = "",
+})
+
+vim.fn.sign_define("DapBreakpointRejected", {
+    text = "",
+    texthl = "DiagnosticSignError",
+    linehl = "",
+    numhl = "",
+})
+vim.fn.sign_define("DapStopped", {
+    text = "",
+    texthl = "DiagnosticSignWarn",
+    linehl = "Visual",
+    numhl = "DiagnosticSignWarn",
+})
+
+vim.api.nvim_create_autocmd("BufWinEnter", {
+    callback = function()
+        local buf_ft = vim.bo.filetype
+
+        if buf_ft == "dapui_breakpoints" then
+            vim.cmd("setlocal winbar=\\ Breakpoints")
+        end
+        if buf_ft == "dapui_stacks" then
+            vim.cmd("setlocal winbar=\\\\ Stacks")
+        end
+
+        if buf_ft == "dapui_scopes" then
+            vim.cmd("setlocal winbar=\\\\ Scopes")
+        end
+
+        if buf_ft == "dapui_watches" then
+            vim.cmd("setlocal winbar=\\󰂥\\ Watches")
+        end
+    end,
+})
