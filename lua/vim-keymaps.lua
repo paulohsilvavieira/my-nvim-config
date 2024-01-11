@@ -1,7 +1,7 @@
 local opts = { noremap = true, silent = true }
 
 
-vim.keymap.set('n', '<C-s>', ':w<CR>', { silent = true })
+vim.keymap.set('n', '<C-s>', ':silent! w<CR>', { silent = true })
 
 
 vim.keymap.set('n', '<C-w>', ':BufDel<CR>', { noremap = true, silent = true })

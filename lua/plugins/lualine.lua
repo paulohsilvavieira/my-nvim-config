@@ -78,5 +78,20 @@ return {
 
       },
     }
+
+    vim.api.nvim_create_autocmd({"BufWinEnter", "BufEnter", "VimEnter", "CursorHold", "CursorHoldI", "FocusGained"}, {
+      callback = function()
+          local buf_ft = vim.bo.filetype
+          if buf_ft == "alpha" then
+              vim.cmd("set laststatus=0")
+              return 
+          end
+
+          if buf_ft ~= "alpha" then
+              vim.cmd("set laststatus=3")
+              return               
+          end
+      end
+  })
   end
 }

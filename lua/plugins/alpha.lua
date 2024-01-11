@@ -139,20 +139,19 @@ return {
 
     local opts = {
       layout = {
-        {type = "padding", val = 3},
-        section.header,
         {type = "padding", val = 2},
+        section.header,
+        {type = "padding", val = 1},
         section.hi_top_section,
         section.hi_middle_section,
         section.hi_middle_section_msg,
         section.hi_middle_section_ms_buildby,
         section.hi_middle_section_ms_github,
-
         section.hi_middle_section,
         section.hi_bottom_section,
-        {type = "padding", val = 2},
+        {type = "padding", val = 1},
         section.buttons,
-        {type = "padding", val = 2},
+        {type = "padding", val = 1},
         section.footer,
       },
       opts = {
