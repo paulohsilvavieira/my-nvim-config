@@ -18,12 +18,36 @@ return {
                         filetype = "NvimTree",
                         text = "",
                         highlight = "",
-                        separator = false,
+                        separator = true,
                     },
                 },
 
             }
         }
+        vim.api.nvim_create_autocmd({"BufWinEnter", "BufEnter", "VimEnter", "CursorHold", "CursorHoldI", "FocusGained"}, {
+            callback = function()
+                local buf_ft = vim.bo.filetype
+                
+                
+                
+                if buf_ft == "alpha" then
+                    vim.cmd("hi BufferLineFill guibg='#23283b'")
+                    vim.cmd("set termguicolors")   
+                    return 
+                end
+
+                if buf_ft ~= "alpha" then
+                    vim.cmd("hi BufferLineFill guibg='#13161f'")
+                    vim.cmd("set termguicolors")
+                    return               
+                end
+              
+               
+              
+            end
+        })
+
+      
     end
 
 
