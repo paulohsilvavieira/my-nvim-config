@@ -1,7 +1,5 @@
 return {
-  {
-    "nvim-telescope/telescope-ui-select.nvim",
-  },
+  
   {
     "nvim-telescope/telescope.nvim",
     tag = "0.1.5",
@@ -18,12 +16,11 @@ return {
 
         extensions = {
           "fzf",
+          "dap"
         },
       })
       require("telescope").load_extension("fzf")
-     
-
-
+    
       local builtin = require("telescope.builtin")
       vim.keymap.set("n", "<C-p>", ":Telescope find_files<cr>", {
         silent = true,
