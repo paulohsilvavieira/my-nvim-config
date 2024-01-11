@@ -20,7 +20,6 @@ return {
         },
       })
       require("telescope").load_extension("fzf")
-      require("telescope").load_extension("dap")
 
       local builtin = require("telescope.builtin")
       vim.keymap.set("n", "<C-p>", ":Telescope find_files<cr>", {

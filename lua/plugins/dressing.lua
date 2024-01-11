@@ -2,6 +2,10 @@ return {
    'stevearc/dressing.nvim',
   opts = {},
   config=function()
-    require('dressing').setup({})
+    require('dressing').setup({
+      select = {},
+      telescope = nil,
+
+    })
   end
 }
