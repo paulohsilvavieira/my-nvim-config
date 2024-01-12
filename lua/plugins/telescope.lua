@@ -5,7 +5,6 @@ return {
     tag = "0.1.5",
     dependencies = {
       { "nvim-lua/plenary.nvim" },
-      {  "nvim-telescope/telescope-dap.nvim"    },
       {
         "nvim-telescope/telescope-fzf-native.nvim",
         build = "make",
@@ -16,7 +15,7 @@ return {
 
         extensions = {
           "fzf",
-          "dap"
+       
         },
       })
       require("telescope").load_extension("fzf")

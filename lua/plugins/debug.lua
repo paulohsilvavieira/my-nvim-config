@@ -111,22 +111,19 @@ return {
 			}
 		end
 
-
-		-- Keymaps
-
-		vim.keymap.set("n", "<F9>", ":DapToggleBreakpoint<CR>", {silent = true})
-		vim.keymap.set("n", "<F5>", ":DapContinue<CR>", {silent = true,})
-		vim.keymap.set("n", "<S-F5>", ":DapTerminate<CR>", {silent = true})
-		vim.keymap.set("n", "<F10>", ":DapStepOver<CR>", {silent = true})
-		vim.keymap.set("n", "<F11>", ":DapStepIn<CR>", {silent = true})
-		vim.keymap.set("n", "<S-F11>", ":DapStepOut<CR>", {silent = true})
+		
 		vim.keymap.set("n", "<leader>do", ":lua require('dapui').open()<CR>", {silent = true})
 		vim.keymap.set("n", "<leader>dc", ":lua require('dapui').close()<CR>", {silent = true})
-
 	end,
 	keys = {
 		{
-			"<leader>da",
+			"<F9>",
+			function()
+				require('dap').toggle_breakpoint()
+			end
+		},
+		{
+			"<F5>",
 			function()
 				if vim.fn.filereadable(".vscode/launch.json") then
 					local dap_vscode = require("dap.ext.vscode")
@@ -141,5 +138,37 @@ return {
 			end,
 			desc = "Run with Args",
 		},
+		{
+			"<S-F5>",
+			function()
+				require('dap').terminate()
+			end
+		},
+		{
+			"<F10>",
+			function()
+
+				require('dap').step_over()
+			end
+		},
+		{
+			"<F11>",
+			function()
+
+				require('dap').step_in()
+			end
+		},
+		{
+			"<S-F11>",
+			function()
+				require('dap').step_out()
+			end
+		},
+		{
+			"<C-S-F5>",
+			function()	
+				require('dap').run_last()
+			end
+		}
 	},
 }
