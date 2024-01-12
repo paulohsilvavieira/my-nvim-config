@@ -79,7 +79,7 @@ return {
       },
     }
 
-    vim.api.nvim_create_autocmd({"BufWinEnter", "BufEnter", "VimEnter", "CursorHold", "CursorHoldI", "FocusGained"}, {
+    vim.api.nvim_create_autocmd({"VimEnter","BufWinEnter", "BufEnter","CursorHold", "CursorHoldI", "FocusGained"}, {
       callback = function()
           local buf_ft = vim.bo.filetype
           if buf_ft == "alpha" then
@@ -92,6 +92,6 @@ return {
               return               
           end
       end
-  })
+    })
   end
 }

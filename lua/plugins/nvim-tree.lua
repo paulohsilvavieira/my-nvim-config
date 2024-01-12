@@ -65,32 +65,10 @@ return {
 
 
 
-        local function open_nvim_tree(data)
-            -- buffer is a real file on the disk
-            local real_file = vim.fn.filereadable(data.file) == 1
-        
-            -- buffer is a [No Name]
-            local no_name = data.file == "" and vim.bo[data.buf].buftype == ""
-        
-            -- open the tree, find the file but don't focus it
-            -- require("nvim-tree.api").tree.toggle({ focus = false, find_file = false, })
-        end
-        
-        local function open_nvim_tree_new_buffer(data)
-            local directory = vim.fn.isdirectory(data.file) == 1
-        
-            if not directory then
-                return
-            end
-            vim.cmd.enew()
-            vim.cmd.bw(data.buf)
-            vim.cmd.cd(data.file)
-        end
-        
         
         vim.g.nvim_tree_auto_open = 0
-        vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
-        vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree_new_buffer })
+        -- vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
+        -- vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree_new_buffer })
     end
 
 

@@ -27,9 +27,6 @@ return {
         vim.api.nvim_create_autocmd({"BufWinEnter", "BufEnter", "VimEnter", "CursorHold", "CursorHoldI", "FocusGained"}, {
             callback = function()
                 local buf_ft = vim.bo.filetype
-                
-                
-                
                 if buf_ft == "alpha" then
                     vim.cmd("hi BufferLineFill guibg='#23283b'")
                     vim.cmd("set termguicolors")   
@@ -41,13 +38,9 @@ return {
                     vim.cmd("set termguicolors")
                     return               
                 end
-              
-               
-              
+                        
             end
         })
-
-      
     end
 
 
