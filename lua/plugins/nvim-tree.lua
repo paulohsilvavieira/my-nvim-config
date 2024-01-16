@@ -6,9 +6,26 @@ return {
         "nvim-tree/nvim-web-devicons",
     },
     config = function()
+
+        vim.g.nvim_tree_disable_default_keybindings = 1
+
+        local function on_attach(bufnr)
+            local api = require "nvim-tree.api"
+          
+            local function opts()
+              return { buffer = bufnr, noremap = true, silent = true, nowait = true }
+            end
+          
+            -- default mappings
+            api.config.mappings.default_on_attach(bufnr)
+          
+            -- custom mappings
+            vim.keymap.set('n', '<A-v>', api.node.open.vertical, opts('Up'))
+          end
+
         require("nvim-tree").setup {
             filters = {
-                dotfiles = true,
+                dotfiles = false,
             },
             hijack_directories = {
                 enable = false,
@@ -59,10 +76,11 @@ return {
                     error = "",
                 },
             },
+            on_attach = on_attach,
+
         }
 
-        vim.keymap.set('n', "<leader>e", ":NvimTreeToggle<CR>", { silent = true })
-
+        vim.keymap.set('n', "<leader>e", ":NvimTreeToggle<CR>", { silent = true, desc='Open Explorer' })
 
 
         

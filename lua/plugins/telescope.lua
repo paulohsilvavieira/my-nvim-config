@@ -12,8 +12,8 @@ return {
     },
     
     config = function()
+
       require("telescope").setup({
-       
         extensions = {
           "fzf",
         },
@@ -22,6 +22,14 @@ return {
           layout_config = {
             height = 0.95,
             prompt_position = 'top',
+          },
+          mappings = {
+            i = {
+              ["<A-v>"] = require("telescope.actions").file_vsplit,
+            },
+            n = {
+              ["<A-v>"] = require("telescope.actions").file_vsplit,
+            },
           },
       },
       pickers = {
@@ -39,7 +47,7 @@ return {
       })
       vim.keymap.set("n", "<S-p>", ":Telescope find_files hidden=true no_ignore=true<cr>", { silent = true })
 
-      vim.keymap.set("n", "<leader>fg", builtin.live_grep, { silent = true })
+      vim.keymap.set("n", "<leader>fg", builtin.live_grep, { silent = true, desc='Live Grep' })
     end,
   },
 }

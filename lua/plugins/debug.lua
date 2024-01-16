@@ -111,10 +111,11 @@ return {
 			}
 		end
 
-		
 		vim.keymap.set("n", "<leader>do", ":lua require('dapui').open()<CR>", {silent = true})
 		vim.keymap.set("n", "<leader>dc", ":lua require('dapui').close()<CR>", {silent = true})
+
 	end,
+	
 	keys = {
 		{
 			"<F9>",
@@ -171,4 +172,6 @@ return {
 			end
 		}
 	},
+			
+
 }

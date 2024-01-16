@@ -150,6 +150,6 @@ return {
       },
     }
     alpha.setup(opts)
-    vim.keymap.set("n", "<leader>;", ":Alpha<CR>", { silent = true })
+    vim.keymap.set("n", "<leader>;", ":Alpha<CR>", { silent = true , desc='Open dashboard' })
   end
 }
