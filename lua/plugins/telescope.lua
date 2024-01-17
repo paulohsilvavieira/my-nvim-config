@@ -18,7 +18,7 @@ return {
           "fzf",
         },
         defaults = {
-          layout_strategy = "vertical",
+          layout_strategy = "horizontal",
           layout_config = {
             height = 0.95,
             prompt_position = 'top',
@@ -32,17 +32,12 @@ return {
             },
           },
       },
-      pickers = {
-          find_files = {
-              hidden = true,
-              theme='dropdown'
-          },
-      },
+    
       })
       require("telescope").load_extension("fzf")
 
       local builtin = require("telescope.builtin")
-      vim.keymap.set("n", "<C-p>", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown{previewer = false })<cr>", {
+      vim.keymap.set("n", "<C-p>", ":lua require('telescope.builtin').find_files()<cr>", {
         silent = true,
       })
       vim.keymap.set("n", "<S-p>", ":Telescope find_files hidden=true no_ignore=true<cr>", { silent = true })

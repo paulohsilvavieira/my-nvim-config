@@ -16,11 +16,11 @@ return {
               return { buffer = bufnr, noremap = true, silent = true, nowait = true }
             end
           
-            -- default mappings
             api.config.mappings.default_on_attach(bufnr)
           
-            -- custom mappings
-            vim.keymap.set('n', '<A-v>', api.node.open.vertical, opts('Up'))
+            vim.keymap.set('n', '<A-v>', api.node.open.vertical, opts('Open Vertical'))
+            vim.keymap.set('n', '<A-x>', api.node.open.horizontal, opts('Open Horizontal'))
+
           end
 
         require("nvim-tree").setup {
