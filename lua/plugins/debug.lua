@@ -1,14 +1,13 @@
 local js_based_languages = {
 	"typescript",
 	"javascript",
-	"typescriptreact",
-	"javascriptreact",
-	"vue",
 } 
+
 return {
 	
 	"mfussenegger/nvim-dap",
 	dependencies = { 
+	
 		{"rcarriga/nvim-dap-ui"},
 		{
 			"microsoft/vscode-js-debug",
@@ -20,9 +19,12 @@ return {
 			config = function()
 				---@diagnostic disable-next-line: missing-fields
 				require("dap-vscode-js").setup({
-					
-					debugger_path = vim.fn.resolve(vim.fn.stdpath("data") .. "/lazy/vscode-js-debug/src/vsDebugServer.js"),
-			
+					-- Path of node executable. Defaults to $NODE_PATH, and then "node"
+					-- node_path = "node",
+
+					-- Path to vscode-js-debug installation.
+					debugger_path = vim.fn.resolve(vim.fn.stdpath("data") .. "/lazy/vscode-js-debug"),
+
 				
 					adapters = {
 						"chrome",
@@ -31,14 +33,20 @@ return {
 						"pwa-msedge",
 						"pwa-extensionHost",
 						"node-terminal",
-						"node"
+						"node2"
 					},
+
 				})
 			end,
+		},
+		{
+			"Joakker/lua-json5",
+			build = "./install.sh",
 		},
 	},
 	
 	config = function()
+		
 		require("dapui").setup({
 			controls = {
 				enabled = true,
@@ -57,7 +65,8 @@ return {
 				},
 				{
 					elements = {
-						{ id = "repl", size = 1 },
+						{ id = "repl", size = 0.5 },
+						{ id = "console", size = 0.5 },
 					},
 					size = 0.30,
 					position = "bottom",
@@ -65,7 +74,14 @@ return {
 			},
 		})
 
-		local dap, dapui = require("dap"), require("dapui")
+		local dap = require("dap")
+		local dapui= require("dapui")
+
+		dap.adapters.node2 = {
+			type = 'executable',
+			command = 'node',
+			args = {os.getenv('HOME') .. '/dev/microsoft/vscode-node-debug2/out/src/nodeDebug.js'},
+		}
 
 		dap.listeners.before.attach.dapui_config = function()
 			dapui.open()
@@ -82,38 +98,23 @@ return {
 
 
 
-		dap.adapters.node2 = {
-			type = 'executable',
-			command = 'node',
-			args = {os.getenv('HOME') .. '/dev/microsoft/vscode-node-debug2/out/src/nodeDebug.js'},
-		}
 
 		for _, language in ipairs(js_based_languages) do
 			dap.configurations[language] = {
 				{
-					type = "node2",
-					request = "attach",
-					name = "Attach debugger to existing `node --inspect` process",
-					processId = require 'dap.utils'.pick_process,
-					sourceMaps = true,
-					resolveSourceMapLocations = {
-						"${workspaceFolder}/**",
-						"!**/node_modules/**" },
-					cwd = "${workspaceFolder}/src",
-					skipFiles = { "${workspaceFolder}/node_modules/**/*.js" },
-				},
-
-				{
-					name = "----- ↓ launch.json configs ↓ -----",
+					name = "----- ↓ Launch Json ↓ -----",
 					type = "",
 					request = "launch",
 				},
+				{
+					name = 'Attach to process Node2',
+					type = 'node2',
+					request = 'attach',
+					processId = require'dap.utils'.pick_process,
+				},
+
 			}
 		end
-
-		vim.keymap.set("n", "<leader>do", ":lua require('dapui').open()<CR>", {silent = true})
-		vim.keymap.set("n", "<leader>dc", ":lua require('dapui').close()<CR>", {silent = true})
-
 	end,
 	
 	keys = {
@@ -129,12 +130,12 @@ return {
 				if vim.fn.filereadable(".vscode/launch.json") then
 					local dap_vscode = require("dap.ext.vscode")
 					dap_vscode.load_launchjs(nil, {
-						["pwa-node"] = js_based_languages,
-						["chrome"] = js_based_languages,
-						["node2"] = js_based_languages,
-						["pwa-chrome"] = js_based_languages,
+						["node-terminal"] = js_based_languages,
+						["node"] = js_based_languages,
+
 					})
 				end
+
 				require("dap").continue()
 			end,
 			desc = "Run with Args",
@@ -172,6 +173,6 @@ return {
 			end
 		}
 	},
-			
+  
 
 }

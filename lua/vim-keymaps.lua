@@ -4,13 +4,12 @@ local opts = { noremap = true, silent = true }
 vim.keymap.set('n', '<C-s>', ':silent! w<CR>', { silent = true })
 
 
-vim.keymap.set('n', '<leader>w', ':BufDel<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-w>', ':silent! BufDel<CR>', { noremap = true, silent = true })
 
 
 vim.keymap.set('n', '<A-k>', ':m .+1<CR>==', { noremap = true, silent = true })
 vim.keymap.set('n', '<A-j>', ':m .-2<CR>==', { noremap = true, silent = true })
-vim.keymap.set('n', 'vv', ':vsplit<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', 'vh', ':split<CR>', { noremap = true, silent = true })
+
 
 
 vim.keymap.set("n", "<C-h>", "<C-w>h", {silent = true})

@@ -37,10 +37,10 @@ return {
       require("telescope").load_extension("fzf")
 
       local builtin = require("telescope.builtin")
-      vim.keymap.set("n", "<C-p>", ":lua require('telescope.builtin').find_files()<cr>", {
+      vim.keymap.set("n", "<leader>ff", ":lua require('telescope.builtin').find_files()<cr>", {
         silent = true,
       })
-      vim.keymap.set("n", "<S-p>", ":Telescope find_files hidden=true no_ignore=true<cr>", { silent = true })
+      vim.keymap.set("n", "<leader>fa", ":Telescope find_files hidden=true no_ignore=true<cr>", { silent = true })
 
       vim.keymap.set("n", "<leader>fg", builtin.live_grep, { silent = true, desc='Live Grep' })
     end,

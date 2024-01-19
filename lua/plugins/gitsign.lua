@@ -11,7 +11,9 @@ return {
             signcolumn = true
         }
 
-        vim.cmd("hi GitSignsAdd guifg=#d2ebbe")
+        vim.cmd("hi GitSignsAdd guifg=#98BE65")
         vim.cmd("hi GitSignsChange guifg=#ECBE7B")
+        vim.cmd("hi GitSignsRemove guifg=#ECBE7B")
+
     end
 }
