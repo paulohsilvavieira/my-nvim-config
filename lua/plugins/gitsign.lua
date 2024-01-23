@@ -6,7 +6,7 @@ return {
                 add       = { hl = "GitSignsAdd", text = '', },
                 change    = { hl = "GitSignsChange", text = '', },
                 delete    = { hl = "GitSignsDelete", text = '' },
-                untracked = { text = '' },
+                untracked = { text = ' ' },
             },
             signcolumn = true
         }
