@@ -8,7 +8,7 @@ return {
       cmdline = {
         enable_keymaps = true,
         smart_history = true,
-        prompt = 'Command: '
+        prompt = 'RUN: '
       },
       popup = {
         position = {

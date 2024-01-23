@@ -6,7 +6,8 @@ vim.cmd("set noshowmode")
 vim.cmd("set laststatus=3")
 vim.cmd("set noruler")
 vim.cmd("set guicursor= ")
-
+vim.cmd("set wrap linebreak")
+vim.cmd("set hidden")
 vim.g.mapleader = " "
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
@@ -14,7 +15,6 @@ vim.g.loaded_netrwPlugin = 1
 vim.loader.enable()
 
 vim.wo.number = true
-vim.cmd("set hidden")
 
 vim.api.nvim_create_autocmd("BufWritePost", {
     callback = function()

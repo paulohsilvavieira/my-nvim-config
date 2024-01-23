@@ -41,8 +41,7 @@ return {
             sources = { "nvim_diagnostic" },
             always_visible = true,
             sections = { 'error', 'warn' },
-            symbols = { error = '󰅙', warn = '', }
-
+            symbols = { error = '󰅙 ', warn = ' ', }
           },
 
         },
@@ -51,9 +50,9 @@ return {
           { "diff",
             source = diff_source,
             symbols = {
-              added = "",
-              modified = "",
-              removed = "",
+              added = " ",
+              modified = " ",
+              removed = " ",
             },
             padding = { left = 2, right = 1 },
             diff_color = {
