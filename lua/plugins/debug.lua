@@ -83,6 +83,9 @@ return {
 			args = {os.getenv('HOME') .. '/dev/microsoft/vscode-node-debug2/out/src/nodeDebug.js'},
 		}
 
+
+
+
 		dap.listeners.before.attach.dapui_config = function()
 			dapui.open()
 		end
@@ -97,24 +100,57 @@ return {
 		end
 
 
+		dap.configurations.typescript = {
+			{
+				-- For this to work you need to make sure the node process is started with the `--inspect` flag.
+				name = 'Attach to process',
+				type = 'node2',
+				request = 'attach',
+				processId = require'dap.utils'.pick_process,
+				cwd = "${workspaceFolder}",
+			},
+			{
+				name = "----- ↓ Launch Json ↓ -----",
+				type = "",
+				request = "launch",
+			},
+		}
+		
+		
+		dap.configurations.javascript = {
+			{
+				-- For this to work you need to make sure the node process is started with the `--inspect` flag.
+				name = 'Attach to process',
+				type = 'node2',
+				request = 'attach',
+				processId = require'dap.utils'.pick_process,
+				cwd = "${workspaceFolder}",
+		
+			},
+			{
+				name = "----- ↓ Launch Json ↓ -----",
+				type = "",
+				request = "launch",
+			},
+		}
 
 
-		for _, language in ipairs(js_based_languages) do
-			dap.configurations[language] = {
-				{
-					name = "----- ↓ Launch Json ↓ -----",
-					type = "",
-					request = "launch",
-				},
-				{
-					name = 'Attach to process Node2',
-					type = 'node2',
-					request = 'attach',
-					processId = require'dap.utils'.pick_process,
-				},
+		-- for _, language in ipairs(js_based_languages) do
+		-- 	dap.configurations[language] = {
+		-- 		{
+		-- 			name = "----- ↓ Launch Json ↓ -----",
+		-- 			type = "",
+		-- 			request = "launch",
+		-- 		},
+		-- 		{
+		-- 			name = 'Attach to process Node2',
+		-- 			type = 'node2',
+		-- 			request = 'attach',
+		-- 			processId = require'dap.utils'.pick_process,
+		-- 		},
 
-			}
-		end
+		-- 	}
+		-- end
 	end,
 	
 	keys = {
@@ -132,7 +168,7 @@ return {
 					dap_vscode.load_launchjs(nil, {
 						["node-terminal"] = js_based_languages,
 						["node"] = js_based_languages,
-
+						["node2"] = js_based_languages,
 					})
 				end
 

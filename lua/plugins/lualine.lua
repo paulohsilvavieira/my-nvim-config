@@ -41,7 +41,7 @@ return {
             sources = { "nvim_diagnostic" },
             always_visible = true,
             sections = { 'error', 'warn' },
-            symbols = { error = '󰅙', warn = '', }
+            symbols = { error = '󰅙 ', warn = ' ', }
 
           },
 
