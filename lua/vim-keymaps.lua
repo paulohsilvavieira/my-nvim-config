@@ -9,8 +9,7 @@ vim.keymap.set('n', '<C-w>', ':silent! BufDel<CR>', { noremap = true, silent = t
 
 vim.keymap.set('n', '<A-k>', ':m .+1<CR>==', { noremap = true, silent = true })
 vim.keymap.set('n', '<A-j>', ':m .-2<CR>==', { noremap = true, silent = true })
-
-
+vim.keymap.set('t', '<ESC>', "<C-\\><C-n><C-w>h",{silent = true})
 
 vim.keymap.set("n", "<C-h>", "<C-w>h", {silent = true})
 vim.keymap.set("n", "<C-j>", "<C-w>j", {silent = true})
