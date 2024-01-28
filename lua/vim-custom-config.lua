@@ -3,7 +3,6 @@ vim.cmd("set tabstop=2")
 vim.cmd("set softtabstop=2")
 vim.cmd("set shiftwidth=2")
 vim.cmd("set noshowmode")
-vim.cmd("set laststatus=3")
 vim.cmd("set noruler")
 vim.cmd("set guicursor= ")
 vim.cmd("set wrap linebreak")
@@ -76,3 +75,4 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
         end
     end,
 })
+

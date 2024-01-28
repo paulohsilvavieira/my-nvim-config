@@ -52,7 +52,7 @@ return {
     dashboard.section.buttons.val = {
       dashboard.button( " e ", "  New file" , ":ene <BAR> startinsert <CR>"),
       dashboard.button( " p ", "  Projects", ":lua require('telescope').extensions.projects.projects(require('telescope.themes').get_dropdown{previewer = false})<CR>"),
-      dashboard.button( " s ", "  Settings" , ":e $MYVIMRC | :cd %:p:h | split . | wincmd k | pwd<CR>"),
+      dashboard.button( " s ", "  Settings" , ":e $MYVIMRC<CR>"),
       dashboard.button( " q ", "  Quit NVIM", ":qa<CR>"),
     }
 
@@ -151,5 +151,18 @@ return {
     }
     alpha.setup(opts)
     vim.keymap.set("n", "<leader>;", ":Alpha<CR>", { silent = true , desc='Open dashboard' })
+
+    vim.api.nvim_create_autocmd({"VimEnter","BufWinEnter","BufEnter","CursorHold", "CursorHoldI", "FocusGained"}, {
+      callback = function()
+          local buf_ft = vim.bo.filetype
+          if buf_ft == "alpha" then
+              vim.cmd("set laststatus=0")
+              return 
+          else
+            vim.cmd("set laststatus=3")
+            return  
+          end
+      end
+    })
   end
 }

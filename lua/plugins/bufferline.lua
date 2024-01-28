@@ -38,6 +38,8 @@ return {
                     vim.cmd("set termguicolors")
                     return               
                 end
+
+               
                         
             end
         })
