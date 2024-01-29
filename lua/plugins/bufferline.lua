@@ -28,7 +28,7 @@ return {
             callback = function()
                 local buf_ft = vim.bo.filetype
                 if buf_ft == "alpha" then
-                    vim.cmd("hi BufferLineFill guibg='#23283b'")
+                    vim.cmd("hi BufferLineFill guibg='NONE'")
                     vim.cmd("set termguicolors")   
                     return 
                 end

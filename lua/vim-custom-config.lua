@@ -23,6 +23,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 
 vim.o.autoread = true
 
+
 vim.api.nvim_create_autocmd({"BufEnter", "CursorHold", "CursorHoldI", "FocusGained"}, {
     command = "if mode() != 'c' | checktime | endif",
     pattern = {"*"}
@@ -74,5 +75,31 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
             vim.cmd("setlocal winbar=\\󰂥\\ Watches")
         end
     end,
+})
+
+
+
+-- vim.api.nvim_create_autocmd({"BufWinEnter", "BufEnter", "VimEnter", "CursorHold", "CursorHoldI", "FocusGained"}, {
+--     callback = function()
+--         local buf_ft = vim.fn.bufname('%')
+--         if buf_ft == 'NO NAME' then
+--             vim.cmd("silent! bdelete")
+
+--             return 
+--         end       
+--     end
+-- })
+vim.api.nvim_create_augroup("alpha_on_empty", { clear = true })
+vim.api.nvim_create_autocmd("User", {
+	pattern = "BDeletePre *",
+	group = "alpha_on_empty",
+	callback = function()
+		local bufnr = vim.api.nvim_get_current_buf()
+		local name = vim.api.nvim_buf_get_name(bufnr)
+
+		if name == "" then
+      vim.cmd([[:Alpha | bd#]])
+		end
+	end,
 })
 
