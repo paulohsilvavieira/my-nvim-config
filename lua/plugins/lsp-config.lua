@@ -35,7 +35,21 @@ return {
         lazy = false,
         config = function()
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
+            -- local border = {
+            --     { "🭽", "FloatBorder" },
+            --     { "▔", "FloatBorder" },
+            --     { "🭾", "FloatBorder" },
+            --     { "▕", "FloatBorder" },
+            --     { "🭿", "FloatBorder" },
+            --     { "▁", "FloatBorder" },
+            --     { "🭼", "FloatBorder" },
+            --     { "▏", "FloatBorder" },
+            -- }
+            -- LSP settings (for overriding per client)
+            -- local handlers = {
+            --     ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
+            --     ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
+            -- }
             local attach = function(_, _)
                 vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
                 vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
@@ -43,6 +57,7 @@ return {
                 vim.keymap.set("n", "<leader>gr", "<cmd>Telescope lsp_references<cr>", {})
                 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
                 vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, {})
+                vim.keymap.set("n", "<leader>gk", vim.lsp.buf.hover, {})
             end
             local lspconfig = require("lspconfig")
 
@@ -51,19 +66,23 @@ return {
 
             lspconfig.tsserver.setup({
                 capabilities = capabilities,
-                on_attach = attach
+                on_attach = attach,
+                -- handlers = handlers
             })
             lspconfig.html.setup({
                 capabilities = capabilities,
-                on_attach = attach
+                on_attach = attach,
+                -- handlers = handlers
             })
             lspconfig.lua_ls.setup({
                 capabilities = capabilities,
-                on_attach = attach
+                on_attach = attach,
+                -- handlers = handlers
             })
             lspconfig.tailwindcss.setup({
-                capabilities = capabilities,
+                -- capabilities = capabilities,
                 on_attach = attach,
+                -- handlers = handlers,
                 falseroot_dir = function(...)
                     return require("lspconfig.util").root_pattern(".git")(...)
                 end
@@ -71,7 +90,8 @@ return {
 
             lspconfig.cssls.setup({
                 capabilities = capabilities,
-                on_attach = attach
+                on_attach = attach,
+                -- handlers = handlers
             })
 
 

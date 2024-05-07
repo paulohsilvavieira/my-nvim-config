@@ -6,6 +6,12 @@ return {
         }
     },
     {
+        "ray-x/lsp_signature.nvim",
+        event = "VeryLazy",
+        opts = {},
+        config = function(_, opts) require 'lsp_signature'.setup(opts) end
+    },
+    {
         "L3MON4D3/LuaSnip",
         dependencies = {
             "saadparwaiz1/cmp_luasnip",
@@ -15,11 +21,48 @@ return {
     {
         "hrsh7th/nvim-cmp",
         config = function()
-            require('lspkind').init()
+            local lspkind = require('lspkind')
+
             local cmp = require("cmp")
             require("luasnip.loaders.from_vscode").lazy_load()
 
             cmp.setup({
+                formatting = {
+                    format = lspkind.cmp_format({
+                        mode = 'text_symbol',
+                        maxwidth = 50,
+                        ellipsis_char = '...',
+                        show_labelDetails = true,
+                        preset = 'codicons',
+                        symbol_map = {
+                            Text = "",
+                            Method = "󰆧",
+                            Function = "󰊕",
+                            Constructor = "",
+                            Field = "",
+                            Variable = "",
+                            Class = "",
+                            Interface = "",
+                            Module = "󰅩",
+                            Property = "",
+                            Unit = "󰑭",
+                            Value = "󰎠",
+                            Enum = "",
+                            Keyword = "󰌋",
+                            Snippet = "",
+                            Color = "󰏘",
+                            File = "󰈙",
+                            Reference = "󰈇",
+                            Folder = "󰉋",
+                            EnumMember = "",
+                            Constant = "",
+                            Struct = "",
+                            Event = "",
+                            Operator = "󰆕",
+                            TypeParameter = "",
+                        },
+                    })
+                },
                 snippet = {
                     expand = function(args)
                         require("luasnip").lsp_expand(args.body)

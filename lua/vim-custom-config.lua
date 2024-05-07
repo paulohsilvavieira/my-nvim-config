@@ -7,9 +7,12 @@ vim.cmd("set noruler")
 vim.cmd("set guicursor= ")
 vim.cmd("set wrap linebreak")
 vim.cmd("set hidden")
+vim.cmd("set cursorline")
+
 vim.g.mapleader = " "
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+vim.o.mousemoveevent = true
 
 vim.loader.enable()
 
@@ -24,16 +27,10 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 vim.o.autoread = true
 
 
-vim.api.nvim_create_autocmd({"BufEnter", "CursorHold", "CursorHoldI", "FocusGained"}, {
+vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGained" }, {
     command = "if mode() != 'c' | checktime | endif",
-    pattern = {"*"}
+    pattern = { "*" }
 })
-
-vim.api.nvim_create_autocmd({"BufEnter", "CursorHold", "CursorHoldI", "FocusGained"}, {
-    command = "if mode() != 'c' | checktime | endif",
-    pattern = {"*"}
-})
-
 
 
 vim.fn.sign_define("DapBreakpoint", {
@@ -77,29 +74,36 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
     end,
 })
 
+local _border = "rounded"
+
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+    vim.lsp.handlers.hover, {
+        border = _border
+    }
+)
+
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+    vim.lsp.handlers.signature_help, {
+        border = _border
+    }
+)
+
+vim.diagnostic.config {
+    float = { border = _border }
+}
 
 
--- vim.api.nvim_create_autocmd({"BufWinEnter", "BufEnter", "VimEnter", "CursorHold", "CursorHoldI", "FocusGained"}, {
---     callback = function()
---         local buf_ft = vim.fn.bufname('%')
---         if buf_ft == 'NO NAME' then
---             vim.cmd("silent! bdelete")
-
---             return 
---         end       
---     end
--- })
 vim.api.nvim_create_augroup("alpha_on_empty", { clear = true })
 vim.api.nvim_create_autocmd("User", {
-	pattern = "BDeletePre *",
-	group = "alpha_on_empty",
-	callback = function()
-		local bufnr = vim.api.nvim_get_current_buf()
-		local name = vim.api.nvim_buf_get_name(bufnr)
 
-		if name == "" then
-      vim.cmd([[:Alpha | bd#]])
-		end
-	end,
+    pattern = "BDeletePre *",
+    group = "alpha_on_empty",
+    callback = function()
+        local bufnr = vim.api.nvim_get_current_buf()
+        local name = vim.api.nvim_buf_get_name(bufnr)
+
+        if name == "" then
+            vim.cmd([[:Alpha | bd#]])
+        end
+    end,
 })
-
