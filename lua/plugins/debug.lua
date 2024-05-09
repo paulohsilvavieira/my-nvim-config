@@ -4,9 +4,12 @@ local js_based_languages = {
 }
 
 
+
+
 return {
     "mfussenegger/nvim-dap",
     dependencies = {
+        {"suketa/nvim-dap-ruby"},
         { "theHamsta/nvim-dap-virtual-text" },
         { "nvim-neotest/nvim-nio" },
         { "rcarriga/nvim-dap-ui" },
@@ -88,15 +91,13 @@ return {
         local dap = require("dap")
         local dapui = require("dapui")
         
-
-        -- dap.adapters.node2 = {
-        --     type = 'executable',
-        --     command = 'node',
-        --     args = { os.getenv('HOME') .. '/dev/microsoft/vscode-node-debug2/out/src/nodeDebug.js' },
-        -- }
-
+        require('dap-ruby').setup()   
+        
         
 
+    
+
+          
         
 
         dap.listeners.before.attach.dapui_config = function()
@@ -111,9 +112,55 @@ return {
         dap.listeners.before.event_exited.dapui_config = function()
             dapui.close()
         end
+        dap.adapters.ruby = {
+            type = 'server';
+            port = "9229";
+            command = '/Users/paulohenrique/.rbenv/versions/3.2.0/bin/rdbg';
+            args = {"--open", "--port", "9229", "--"};
+            -- useBundler = true;
+          }
+          --
+          dap.configurations.ruby = {
+            {
+              type = 'ruby';
+              request = 'launch';
+              name = 'ruby debug: start rails';
+              command = 'bin/rails s';
+              useBundler = true;
+            },
+          }
+        -- dap.adapters.ruby = function(callback, config)
+        --     callback {
+        --       type = "server",
+        --       host = "127.0.0.1",
+        --       port = "${port}",
+        --       executable = {
+        --         command = "/Users/paulohenrique/.rbenv/versions/3.2.0/bin/bundle",
+        --         args = { "exec", "rdbg", "-n", "--open", "--port", "${port}",
+        --           "-c", "--", "bundle", "exec", config.command, config.script,
+        --         },
+        --       },
+        --     }
+        --   end
 
-
-
+        --   dap.adapters.ruby = {
+        --     type = 'executable';
+        --     command = '/Users/paulohenrique/.rbenv/versions/3.2.0/bin/bundle';
+        --     args = {'exec', 'readapt', 'stdio'};
+        --   }
+           
+        --   dap.configurations.ruby = {
+        --     {
+        --       type = 'ruby';
+        --       request = 'launch';
+        --       name = 'Rails';
+        --       program = '/Users/paulohenrique/.rbenv/versions/3.2.0/bin/bundle';
+        --       programArgs = {'exec', 'rails', 's'};
+        --       cwd = vim.fn.getcwd(),
+        --       useBundler = true;
+        --     },
+        --   }
+       
         for _, language in ipairs(js_based_languages) do
             dap.configurations[language] = {
                 -- {
@@ -155,7 +202,8 @@ return {
 
                     dap_vscode.load_launchjs(nil, {
                         ["node"] = js_based_languages,
-                        ["pwa-node"] = js_based_languages
+                        ["pwa-node"] = js_based_languages,
+
                     })
                 end
 
