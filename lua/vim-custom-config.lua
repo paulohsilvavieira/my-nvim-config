@@ -33,6 +33,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGai
 })
 
 
+
 vim.fn.sign_define("DapBreakpoint", {
     text = "",
     texthl = "DiagnosticSignError",

@@ -36,7 +36,6 @@ return {
             build = "./install.sh",
         }
     },
-
     config = function()
         require("nvim-dap-virtual-text").setup {
             enabled = true,                     
@@ -65,6 +64,17 @@ return {
             controls = {
                 enabled = true,
                 element = "repl",
+                icons = {
+                    pause = "",
+                    play = "",
+                    step_into = "",
+                    step_over = "",
+                    step_out = "",
+                    step_back = "",
+                    run_last = "",
+                    terminate = "",
+                    disconnect = "",
+                  },
             },
             layouts = {
                 {
@@ -115,7 +125,7 @@ return {
         dap.adapters.ruby = {
             type = 'server';
             port = "9229";
-            command = '/Users/paulohenrique/.rbenv/versions/3.2.0/bin/rdbg';
+            command = vim.fn.expand('$HOME/.rbenv/versions/3.2.0/bin/rdbg');
             args = {"--open", "--port", "9229", "--"};
             -- useBundler = true;
           }
@@ -129,37 +139,7 @@ return {
               useBundler = true;
             },
           }
-        -- dap.adapters.ruby = function(callback, config)
-        --     callback {
-        --       type = "server",
-        --       host = "127.0.0.1",
-        --       port = "${port}",
-        --       executable = {
-        --         command = "/Users/paulohenrique/.rbenv/versions/3.2.0/bin/bundle",
-        --         args = { "exec", "rdbg", "-n", "--open", "--port", "${port}",
-        --           "-c", "--", "bundle", "exec", config.command, config.script,
-        --         },
-        --       },
-        --     }
-        --   end
-
-        --   dap.adapters.ruby = {
-        --     type = 'executable';
-        --     command = '/Users/paulohenrique/.rbenv/versions/3.2.0/bin/bundle';
-        --     args = {'exec', 'readapt', 'stdio'};
-        --   }
-           
-        --   dap.configurations.ruby = {
-        --     {
-        --       type = 'ruby';
-        --       request = 'launch';
-        --       name = 'Rails';
-        --       program = '/Users/paulohenrique/.rbenv/versions/3.2.0/bin/bundle';
-        --       programArgs = {'exec', 'rails', 's'};
-        --       cwd = vim.fn.getcwd(),
-        --       useBundler = true;
-        --     },
-        --   }
+        
        
         for _, language in ipairs(js_based_languages) do
             dap.configurations[language] = {
