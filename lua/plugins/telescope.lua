@@ -15,6 +15,7 @@ return {
                 extensions = {
                     "fzf",
                 },
+               
                 defaults = {
                     layout_strategy = "horizontal",
                     layout_config = {
