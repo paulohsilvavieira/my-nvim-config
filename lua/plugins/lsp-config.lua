@@ -9,8 +9,6 @@ return {
                     "tsserver",
                     "tailwindcss-language-server",
                     "eslint_d",
-                    "eslint"
-
                 }
             })
         end,
