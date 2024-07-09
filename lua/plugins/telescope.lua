@@ -31,17 +31,41 @@ return {
                         },
                     },
                 },
+                pickers = {
+                    find_files = {
+                        hidden = true,
+    
+                        find_command = {"rg", "--files", "--hidden", "--glob=!**/.git/*", "--glob=!**/.idea/*",
+                                        "--glob=!**/.vscode/*", "--glob=!**/build/*", "--glob=!**/dist/*",
+                                        "--glob=!**/yarn.lock", "--glob=!**/package-lock.json"}
+                    },
+                    live_grep = {
+                        additional_args={"--hidden", "--glob=!**/.git/*", "--glob=!**/.idea/*",
+                                        "--glob=!**/.vscode/*", "--glob=!**/build/*", "--glob=!**/dist/*",
+                                        "--glob=!**/yarn.lock", "--glob=!**/package-lock.json"},
+                       
+                       
+                    }
+    
+                }
 
             })
             require("telescope").load_extension("fzf")
 
             local builtin = require("telescope.builtin")
-            vim.keymap.set("n", "<leader>ff", ":lua require('telescope.builtin').find_files()<cr>", {
+            vim.keymap.set("n", "<leader>ff", builtin.find_files, {
                 silent = true,
+                desc = 'Find Files'
             })
-            vim.keymap.set("n", "<leader>fa", ":Telescope find_files hidden=true no_ignore=true<cr>", { silent = true })
-
-            vim.keymap.set("n", "<leader>fg", builtin.live_grep, { silent = true, desc = 'Live Grep' })
+    
+            vim.keymap.set("n", "<leader>fg", builtin.live_grep, {
+                silent = true,
+                desc = 'Live Grep'
+            })
+            vim.keymap.set("n", "<leader>fb", builtin.buffers, {
+                silent = true,
+                desc = 'Find Buffers'
+            })
         end,
     },
 }

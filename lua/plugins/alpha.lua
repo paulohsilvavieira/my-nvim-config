@@ -1,11 +1,11 @@
 return {
   'goolord/alpha-nvim',
   dependencies = { 'nvim-tree/nvim-web-devicons' },
-  config = function ()
+  config = function()
     local alpha = require("alpha")
     local dashboard = require("alpha.themes.dashboard")
-    
-    local header = { 
+
+    local header = {
       "███    █▄   ▄█           ███      ▄█    ▄▄▄▄███▄▄▄▄      ▄████████     ███        ▄████████ ",
       "███    ███ ███       ▀█████████▄ ███  ▄██▀▀▀███▀▀▀██▄   ███    ███ ▀█████████▄   ███    ███ ",
       "███    ███ ███          ▀███▀▀██ ███▌ ███   ███   ███   ███    ███    ▀███▀▀██   ███    █▀  ",
@@ -25,14 +25,14 @@ return {
       "           ▀█   █▀    ██████████  ▀██████▀   ▀██████▀  █▀    ▀█   ███   █▀                  ",
       "                                                                                            ",
     }
-    
+
     local function footer()
       local plugins = require("lazy").stats().count
       local v = vim.version()
       return string.format(" v%d.%d.%d  󰂖 %s ", v.major, v.minor, v.patch, plugins)
     end
 
-    
+
 
     dashboard.section.header.type = "text";
     dashboard.section.header.val = header;
@@ -50,22 +50,24 @@ return {
     }
 
     dashboard.section.buttons.val = {
-      dashboard.button( " e ", "  New file" , ":ene <BAR> startinsert <CR>"),
-      dashboard.button( " p ", "  Projects", ":lua require('telescope').extensions.projects.projects(require('telescope.themes').get_dropdown{previewer = false})<CR>"),
-      dashboard.button( " s ", "  Settings" , ":e $MYVIMRC<CR>"),
-      dashboard.button( " q ", "  Quit NVIM", ":qa<CR>"),
+      dashboard.button(" e ", "  New file", ":ene <BAR> startinsert <CR>"),
+      dashboard.button(" p ", "  Projects",
+        ":lua require('telescope').extensions.projects.projects(require('telescope.themes').get_dropdown{previewer = false})<CR>"),
+      dashboard.button(" s ", "  Settings", ":e $MYVIMRC<CR>"),
+      dashboard.button(" q ", "  Quit NVIM", ":qa<CR>"),
     }
 
-    local thingy = io.popen('echo "$(LANG=en_us_88591; date +%a) $(date +%d) $(LANG=en_us_88591; date +%b)" | tr -d "\n"')
+    local thingy = io.popen(
+    'echo "$(LANG=en_us_88591; date +%a) $(date +%d) $(LANG=en_us_88591; date +%b)" | tr -d "\n"')
     if thingy == nil then return end
     local date = thingy:read("*a")
     thingy:close()
-    
+
     local datetime = os.date " %H:%M"
 
     local hi_top_section = {
       type = "text",
-      val =  "┌────────────   Today is " .. date .. " ────────────┐",
+      val = "┌────────────   Today is " .. date .. " ────────────┐",
       opts = {
         position = "center",
         hl = "MyNeoVimHeaderInfo"
@@ -120,9 +122,9 @@ return {
       header = dashboard.section.header,
       hi_top_section = hi_top_section,
       hi_middle_section = hi_middle_section,
-      hi_middle_section_msg=hi_middle_section_msg,
-      hi_middle_section_ms_github=hi_middle_section_ms_github,
-      hi_middle_section_ms_buildby=hi_middle_section_ms_buildby,
+      hi_middle_section_msg = hi_middle_section_msg,
+      hi_middle_section_ms_github = hi_middle_section_ms_github,
+      hi_middle_section_ms_buildby = hi_middle_section_ms_buildby,
       hi_bottom_section = hi_bottom_section,
       buttons = dashboard.section.buttons,
       footer = dashboard.section.footer,
@@ -130,9 +132,9 @@ return {
 
     local opts = {
       layout = {
-        {type = "padding", val = 2},
+        { type = "padding", val = 2 },
         section.header,
-        {type = "padding", val = 1},
+        { type = "padding", val = 1 },
         section.hi_top_section,
         section.hi_middle_section,
         section.hi_middle_section_msg,
@@ -140,9 +142,9 @@ return {
         section.hi_middle_section_ms_github,
         section.hi_middle_section,
         section.hi_bottom_section,
-        {type = "padding", val = 1},
+        { type = "padding", val = 1 },
         section.buttons,
-        {type = "padding", val = 1},
+        { type = "padding", val = 1 },
         section.footer,
       },
       opts = {
@@ -150,18 +152,18 @@ return {
       },
     }
     alpha.setup(opts)
-    vim.keymap.set("n", "<leader>;", ":Alpha<CR>", { silent = true , desc='Open dashboard' })
+    vim.keymap.set("n", "<leader>;", ":Alpha<CR>", { silent = true, desc = 'Open dashboard' })
 
-    vim.api.nvim_create_autocmd({"VimEnter","BufWinEnter","BufEnter","CursorHold", "CursorHoldI", "FocusGained"}, {
+    vim.api.nvim_create_autocmd({ "VimEnter", "BufWinEnter", "BufEnter", "CursorHold", "CursorHoldI", "FocusGained" }, {
       callback = function()
-          local buf_ft = vim.bo.filetype
-          if buf_ft == "alpha" then
-              vim.cmd("set laststatus=0")
-              return 
-          else
-            vim.cmd("set laststatus=3")
-            return  
-          end
+        local buf_ft = vim.bo.filetype
+        if buf_ft == "alpha" then
+          vim.cmd("set laststatus=0")
+          return
+        else
+          vim.cmd("set laststatus=3")
+          return
+        end
       end
     })
   end

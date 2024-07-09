@@ -3,9 +3,9 @@ return {
 	config = function()
 		require("gitsigns").setup({
 			signs = {
-				add = { hl = "GitSignsAdd", text = "" },
-				change = { hl = "GitSignsChange", text = "" },
-				delete = { hl = "GitSignsDelete", text = "" },
+				add = {  text = "" },
+				change = { text = "" },
+				delete = { text = "" },
 				untracked = { text = "" },
 			},
 			signcolumn = true,

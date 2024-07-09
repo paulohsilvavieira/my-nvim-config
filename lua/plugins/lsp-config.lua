@@ -1,5 +1,6 @@
 return {
     { "folke/neodev.nvim" },
+    { 'mihyaeru21/nvim-ruby-lsp' },
     {
         "williamboman/mason.nvim",
         lazy = false,
@@ -9,6 +10,10 @@ return {
                     "tsserver",
                     "tailwindcss-language-server",
                     "eslint_d",
+                    "rubocop",
+                    "solargraph",
+                    "lua_ls",
+
                 }
             })
         end,
@@ -24,6 +29,11 @@ return {
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "tsserver",
+                    "rubocop",
+                    "solargraph",
+                    "lua_ls",
+
+
                 }
             })
         end
@@ -31,10 +41,11 @@ return {
 
     {
         "neovim/nvim-lspconfig",
+
         lazy = false,
         config = function()
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
+            require('ruby-lsp').setup()
             local attach = function(_, _)
                 vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
                 vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
@@ -53,6 +64,11 @@ return {
 
 
             lspconfig.tsserver.setup({
+                capabilities = capabilities,
+                on_attach = attach,
+                -- handlers = handlers
+            })
+            lspconfig.solargraph.setup({
                 capabilities = capabilities,
                 on_attach = attach,
                 -- handlers = handlers
@@ -80,6 +96,10 @@ return {
                 capabilities = capabilities,
                 on_attach = attach,
                 -- handlers = handlers
+            })
+            lspconfig.ruby_lsp.setup({
+                capabilities = capabilities,
+                on_attach = attach,
             })
 
 
